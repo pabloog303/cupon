@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Página 1
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="startCamera()">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-segment>
+    <ion-segment-button value="candies" content-id="candies">
+      <ion-label>Dulces</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="drinks" content-id="drinks">
+      <ion-label>Bebidas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="meats" content-id="meats">
+      <ion-label>Carnes</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <ion-segment-view>
+    <ion-segment-content id="candies">
+      <ng-container [ngTemplateOutlet]="couponTemplate" [ngTemplateOutletContext]="{category: 'candies'}"></ng-container>
+    </ion-segment-content>
+    <ion-segment-content id="drinks">
+      <ng-container [ngTemplateOutlet]="couponTemplate" [ngTemplateOutletContext]="{category: 'drinks'}"></ng-container>
+    </ion-segment-content>
+    <ion-segment-content id="meats">
+      <ng-container [ngTemplateOutlet]="couponTemplate" [ngTemplateOutletContext]="{category: 'meats'}"></ng-container>
+    </ion-segment-content>
+  </ion-segment-view>
+
+  <ng-template #couponTemplate let-categoria="category">
+    <ion-grid>
+      <ion-row>
+        @for(coupon of coupons | filterCouponCategory: categoria; track coupon.idProduct){
+          <ion-col size="6">
+            <ion-card class="rounded" [color]="coupon.active ? 'secondary' : 'light'" (click)="changeActive(coupon)">
+              <ion-img [src]="coupon.img"/>
+              <ion-card-header class="ion-text-center">
+                <ion-card-subtitle>{{ coupon.name }}</ion-card-subtitle>
+                <ion-card-title>{{ coupon.discount }}%</ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        }
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+</ion-content>
